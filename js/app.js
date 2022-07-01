@@ -49,7 +49,7 @@ const showCoffees = () => {
         <div class="card" >
         <div class="card-body text-center">
         <img src="${image}" class="img-rounded" alt="Responsive Image"
-        width="300" height="300" style="object-fit: cover;">
+        width="300" height="300" style="object-fit: cover;" loading="eager|lazy">
             <p class="card-text fw-bold text-center">${name}</p>
         </div>
         </div>
