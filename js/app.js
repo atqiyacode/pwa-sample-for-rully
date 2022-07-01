@@ -1,3 +1,4 @@
+'use strict'
 const row = document.querySelector(".row");
 const coffees = [{
         name: "Perspiciatis",
@@ -67,4 +68,53 @@ if ("serviceWorker" in navigator) {
             .then(res => console.log("service worker registered"))
             .catch(err => console.log("service worker not registered", err));
     });
+}
+
+var toastElList = document.getElementById('toastinstall');
+var toastElinit = new bootstrap.Toast(toastElList, {
+    autohide: !1,
+});
+
+
+/* PWA add to phone Install ap button */
+var btnAdd = document.getElementById('addtohome')
+var defferedPrompt;
+window.addEventListener("beforeinstallprompt", function(event) {
+    event.preventDefault();
+    defferedPrompt = event;
+
+    btnAdd.addEventListener("click", function(event) {
+        defferedPrompt.prompt();
+
+
+        defferedPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            defferedPrompt = null;
+        });
+    });
+});
+
+window.addEventListener("appinstalled", function(event) {
+    localStorage.setItem('appInstalled', true)
+    document.getElementById('toastinstall').style.display = 'none';
+});
+
+let appInstalled = localStorage.getItem('appInstalled')
+if (!appInstalled) {
+    console.log('not install');
+    // localStorage.setItem('appInstalled', false)
+    toastElinit.show();
+} else {
+    toastElinit.hide();
+}
+
+
+if (window.matchMedia('(display-mode: fullscreen)').matches) {
+    $('#toastinstall').fadeOut()
+} else {
+    $('#toastinstall').fadeIn()
 }
